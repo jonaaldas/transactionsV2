@@ -4,6 +4,7 @@ import { useTransactions } from '../context/TranContext'
 import toast from 'react-hot-toast'
 import { useState, useEffect } from 'react'
 
+// This branch is to add the authintication only
 function ShowAllClients() {
   const navigate = useNavigate()
   const { tran, deleteTransactions } = useTransactions()
