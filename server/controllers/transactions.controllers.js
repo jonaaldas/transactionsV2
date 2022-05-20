@@ -24,6 +24,7 @@ export const createTransactions = async (req, res) => {
       email,
       address,
       price,
+      closed,
       buyer,
       seller
     } = req.body
@@ -36,16 +37,17 @@ export const createTransactions = async (req, res) => {
       address,
       price,
       buyer,
-      seller
+      seller,
+      closed
     })
     tran.buyer = {
       buyerq: [{
           action: 'Attorney Review Started',
-          checked: true
+          checked: false
         },
         {
           action: 'Attorney Review Ended',
-          checked: true
+          checked: false
         },
         {
           action: 'Inspection Was ordered',
@@ -84,9 +86,10 @@ export const createTransactions = async (req, res) => {
         }
       ]
     }
+    tran.closed = false
 
     await tran.save()
-    return res.send('received')
+    return res.json(tran)
   } catch (err) {
     console.error(error.message)
     return res.status(500).json({
