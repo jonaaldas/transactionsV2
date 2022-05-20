@@ -1,11 +1,10 @@
+import {Button} from 'react-bootstrap'
 import { useTransactions } from "../context/TranContext";
 import { useParams } from 'react-router-dom'
 function ShowEachClient() {
   const params = useParams()
   const { tran, handleChecked } = useTransactions();
 
-
-  // state.filter(client => client.id !== action.payload)
   const eachTran = tran.filter(tran => {
     if (tran._id === params.id) {
       return tran
@@ -92,9 +91,12 @@ function ShowEachClient() {
   // 
   // 
   return (
+    <>
     <div className="container flex justify-center">
       {eachTran}
     </div>
+      <Button variant='primary'>Closed!</Button>
+    </>
   );
 }
 
