@@ -19,6 +19,7 @@
     "mongoose-archive": "^1.1.0",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.16",
+    "soft-delete-plugin-mongoose": "^1.0.15",
     "uuidv4": "^6.2.13"
   }
 }

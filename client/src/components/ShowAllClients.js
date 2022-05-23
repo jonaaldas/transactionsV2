@@ -64,9 +64,9 @@ function ShowAllClients() {
                     toast.success('it has been deleted')
                   }} className='edit-btn' >Delete</Button>{' '}
                   <Button variant="secondary" className='edit-btn'
-                    onClick={() => navigate(`transaction/edit/${client._id}`)}
+                    onClick={() => navigate(`transactions/edit/${client._id}`)}
                   >Edit</Button>{' '}
-                  <Button variant="secondary" onClick={() => navigate(`transaction/${client._id}`)}>See More</Button>
+                  <Button variant="secondary" onClick={() => navigate(`transactions/${client._id}`)}>See More</Button>
                 </div>
                 <Row>
                   <Col className='h-16 flex justify-center'>

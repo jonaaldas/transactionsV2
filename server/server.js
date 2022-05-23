@@ -21,6 +21,6 @@ mongodb()
 
 app.use(transactionsRoutes)
 // we listen in what port the server is in
-const port = 4022
+const port = 4024
 app.listen(port) 
 console.log(`server is running in port ${port}`)

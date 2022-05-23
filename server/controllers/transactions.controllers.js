@@ -119,6 +119,24 @@ export const deleteTransaction = async (req, res) => {
     const {
       id
     } = req.params
+    const tran = await Transactions.findById(id)
+    tran.archive()
+    if (!tran) return res.sendStatus(404);
+    return res.sendStatus(204);
+  } catch (err) {
+    console.error(error.message)
+    return res.status(500).json({
+      message: err.message
+    })
+  }
+}
+
+// delete from data base for good
+export const deleteTransactionForGood = async (req, res) => {
+  try {
+    const {
+      id
+    } = req.params
     const tran = await Transactions.findByIdAndDelete(id)
     if (!tran) return res.sendStatus(404);
     return res.sendStatus(204);
@@ -130,15 +148,46 @@ export const deleteTransaction = async (req, res) => {
   }
 }
 
-export const getTransaction = async(req, res)=> {
-  try{
+
+export const getTransaction = async (req, res) => {
+  try {
     const {
       id
     } = req.params
-    const tran =  await Transactions.findById(id)
+    const tran = await Transactions.findById(id)
     if (!tran) return res.sendStatus(404);
     return res.json(tran)
-  }catch (err) {
+  } catch (err) {
+    console.error(error.message)
+    return res.status(500).json({
+      message: err.message
+    })
+  }
+}
+
+
+export const getArchivedTransactions = async (req, res) => {
+  try {
+    const archivedData = await Transactions.find().where('archivedAt').exists();
+    return res.json(archivedData);
+  } catch (err) {
+    console.error(error.message)
+    return res.status(500).json({
+      message: err.message
+    })
+  }
+}
+
+export const restoreArchivedTransactions = async (req, res) => {
+  try {
+    const {
+      id
+    } = req.params
+    const archivedData = await Transactions.find().where('archivedAt').exists().findOne({_id: `${id}`});
+    archivedData.restore();
+    if (!archivedData) return res.sendStatus(404);
+    return res.sendStatus(204);
+  } catch (err) {
     console.error(error.message)
     return res.status(500).json({
       message: err.message

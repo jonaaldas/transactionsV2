@@ -1,103 +1,103 @@
-import { Container, Row, Button, Col, ButtonGroup } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
-import { useTransactions } from '../context/TranContext'
-import toast from 'react-hot-toast'
-import { useState, useEffect } from 'react'
+import {Button} from 'react-bootstrap'
+import { useTransactions } from "../context/TranContext";
+import { useParams } from 'react-router-dom'
+function ShowEachClient() {
+  const params = useParams()
+  const { tran, handleChecked } = useTransactions();
 
-function ShowAllClients() {
-  const navigate = useNavigate()
-  const { tran, deleteTransactions } = useTransactions()
-  const [newItems, setNewItems] = useState([])
-
-  useEffect(() => {
-    if (newItems.length === 0) {
-      setNewItems(tran)
+  const eachTran = tran.filter(tran => {
+    if (tran._id === params.id) {
+      return tran
     }
-  },[])
+  }).map(tran => {
+    // find which questions to display 
+    if (tran.transaction.toLowerCase() === 'seller') {
+      return (
+        <div key={tran._id} className="flex flex-column justify-center align-items-center w-100">
+          <div className="container w-auto flex flex-col ">
+            <h3 className="text-center">{tran.transaction}</h3>
+            <p> <strong className="bold">Name:</strong> {tran.name}</p>
+            <p><strong className="bold">Phone:</strong> {tran.phoneNumber}</p>
+            <p><strong className="bold">Email:</strong> {tran.email}</p>
+            <p><strong className="bold">Address:</strong> {tran.address}</p>
+            <p><strong className="bold">Price:</strong> ${tran.price}</p>
+          </div>
 
-  const filterItem = (transactionType) => {
-    const newItem = tran.filter(tran => tran.transaction.toLowerCase() === transactionType
-    )
-    setNewItems(newItem)
-  };
-
-
-  const showHowmanyBuyers = (tran) => {
-    const newArr = tran.filter(each => {
-      if (each.transaction.toLowerCase() === 'buyer') {
-        return each
-      }
-    })
-    return newArr.length
-  }
-  const showHowmanySellers = (tran) => {
-    const newArr = tran.filter(each => {
-      if (each.transaction.toLowerCase() === 'seller') {
-        return each
-      }
-    })
-    return newArr.length
-  }
-
-  return (
-    <div className="container">
-      <div className="container">
-        <div className='flex w-fit '>   
-          <ButtonGroup aria-label="Basic example">
-            <Button variant="secondary" onClick={() => setNewItems(tran)}>All {tran.length}</Button>
-            <Button variant="secondary" onClick={() => {
-              filterItem('buyer')
-            }}>Buyers {showHowmanyBuyers(tran)}</Button>
-            <Button variant="secondary" onClick={() => filterItem('seller')}>Sellers {showHowmanySellers(tran)}</Button>
-          </ButtonGroup>
+          <div className="w-100 flex flex-col align-items-center justify-start">
+            {
+              tran.seller.sellerq.map(q => {
+                return (
+                  <>
+                    <hr />
+                    <div className="flex align-items-center" style={{ "width": "90%", "maxWidth": "60%" }} key={q._id} >
+                      <input
+                        className="mx-4 w-25"
+                        type="checkbox"
+                        id="action"
+                        name="action"
+                        checked={q.checked}
+                        onChange={() => handleChecked(q._id, tran._id)}
+                      />
+                      <label className="text-center col" htmlFor="action1">{q.action}</label>
+                    </div>
+                    <br />
+                  </>
+                )
+              })
+            }
+          </div>
         </div>
-      </div>
-      <Container className='flex justify-center gap-5 flex-wrap' fluid='sm'>
-        {
-          newItems.length === 0 ? <p> Its empty </p> : newItems.map(client => {
-            return (
-              <div key={client._id} className="border p-3">
-                <div className="buttons">
-                  <Button variant="danger" onClick={() => {
-                    deleteTransactions(client._id)
-                    toast.success('it has been deleted')
-                  }} className='edit-btn' >Delete</Button>{' '}
-                  <Button variant="secondary" className='edit-btn'
-                    onClick={() => navigate(`transaction/edit/${client._id}`)}
-                  >Edit</Button>{' '}
-                  <Button variant="secondary" onClick={() => navigate(`transaction/${client._id}`)}>See More</Button>
-                </div>
-                <Row>
-                  <Col className='h-16 flex justify-center'>
-                    <h1 className='text-center m-auto'>{client.transaction}</h1>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col className='h-12'>Name: {client.name}</Col>
-                </Row>
-                <Row>
-                  <Col className='h-12'>Cell-Phone: {client.phoneNumber}</Col>
+      )
+    } else if (tran.transaction.toLowerCase() === 'buyer') {
+      return (
+        <div key={tran._id} className="flex flex-column justify-center w-100 ">
+          <div className="container w-auto flex flex-col ">
+            <h3 className="text-center">{tran.transaction}</h3>
+            <p> <strong className="bold">Name:</strong> {tran.name}</p>
+            <p><strong className="bold">Phone:</strong> {tran.phoneNumber}</p>
+            <p><strong className="bold">Email:</strong> {tran.email}</p>
+            <p><strong className="bold">Address:</strong> {tran.address}</p>
+            <p><strong className="bold">Price:</strong> ${tran.price}</p>
+          </div>
+          
+          <div className="w-100 flex flex-col align-items-center justify-start">
+            {
+              tran.buyer.buyerq.map(q => {
+                return (
+                  <>
+                    <hr />
+                    <div className="flex align-items-center" style={{ "width": "90%", "maxWidth": "60%" }} key={q._id} >
+                      <input
+                        className="mx-4 w-25"
+                        type="checkbox"
+                        id="action"
+                        name="action"
+                        checked={q.checked}
+                        onChange={() => handleChecked(q._id, tran._id)}
+                      />
+                      <label className="text-center col" htmlFor="action1">{q.action}</label>
+                    </div>
+                    <br />
+                  </>
+                )
+              })
+            }
+          </div>
+        </div >
+      )
+    }
+  })
 
-                </Row>
-                <Row>
-                  <Col className='h-16'>Email: {client.email}</Col>
-
-                </Row>
-                <Row >
-                  <Col className='h-16'>Address: {client.address}</Col>
-
-                </Row>
-                <Row>
-                  <Col className='h-12'>Price: {client.price}</Col>
-                </Row>
-              </div>
-            )
-          })
-        }
-      </Container>
+  // 
+  // 
+  return (
+    <>
+    <div className="container flex justify-center">
+      {eachTran}
     </div>
-
+      <Button variant='primary'>Closed!</Button>
+    </>
   );
 }
 
-export default ShowAllClients;
+export default ShowEachClient;

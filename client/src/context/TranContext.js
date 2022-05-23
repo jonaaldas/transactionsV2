@@ -10,7 +10,9 @@ import {
   deleteTransactionRequest,
   getSingleTransactionToEditRequest,
   editTransactionRequest,
-  getSingleTransactionToViewRequest
+  getSingleTransactionToViewRequest,
+  getAllArchivedTransactionsRequest,
+  restoreASingleTransactionRequest
 } from '../api/api';
 
 // initial context
@@ -29,10 +31,12 @@ export function TransacionsContainers({
   // this will run once and will get all the transactions 
   useEffect(() => {
     getTransactions()
+    getAllArchivedTransactions()
   }, [])
 
   // initial state for the transacionts 
   const [tran, setTran] = useState([])
+  const [archivedTran, setArchivedTran] = useState([])
 
   // const clients = [...new Set(tran.map((Val) => Val.category))];
   // console.log(clients)
@@ -102,10 +106,20 @@ export function TransacionsContainers({
       }
   }
 
+  const getAllArchivedTransactions = async () => {
+    const res = await getAllArchivedTransactionsRequest()
+    setArchivedTran(res.data)    
+  }
+
+  const restoreASingleTransaction = async (id) => {
+    const res = await restoreASingleTransactionRequest(id)
+    if (res.status === 204) console.log('sucess')
+  }
 
   return <TransacionsContext.Provider value = {
       {
         tran,
+        archivedTran,
         setTran,
         getTransactions,
         createTransactions,
@@ -113,7 +127,9 @@ export function TransacionsContainers({
         getSingleTransactionToView,
         editTransaction,
         getSingleTransactionToEdit,
-        handleChecked
+        handleChecked,
+        getAllArchivedTransactions,
+        restoreASingleTransaction
       }
     } > {
       children

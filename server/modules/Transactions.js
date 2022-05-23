@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import mongooseArchive from 'mongoose-archive';
  
 const buyerSchema = new mongoose.Schema({
   buyerq: [{
@@ -87,4 +88,5 @@ const clientSchema = new mongoose.Schema({
 })
 
 
+clientSchema.plugin(mongooseArchive);
 export default mongoose.model('Transactions', clientSchema)
