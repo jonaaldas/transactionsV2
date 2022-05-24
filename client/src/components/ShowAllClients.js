@@ -8,18 +8,19 @@ import { useState, useEffect } from 'react'
 function ShowAllClients() {
   const navigate = useNavigate()
   const { tran, archiveTransactions, deleteTransaction, archivedTran, restoreASingleTransaction } = useTransactions()
-  const [newItems, setNewItems] = useState([])
-
-  useEffect(() => {
-    console.log('i am being render')
-    setNewItems(newItems)
-  }, [])
+  const [filteredItems, setfilteredItems] = useState([])
 
   const filterItem = (transactionType) => {
     const newItem = tran.filter(tran => tran.transaction.toLowerCase() === transactionType
     )
-    setNewItems(newItem)
+    setfilteredItems(newItem)
   };
+
+  useEffect(() => {
+    setfilteredItems(tran)
+  }, [])
+
+
 
 
   const showHowmanyBuyers = (tran) => {
@@ -39,7 +40,7 @@ function ShowAllClients() {
     return newArr.length
   }
   const showHowmanyArchived = (tran) => {
-    setNewItems(tran)
+    setfilteredItems(tran)
   }
 
   // show how delete button in archive
@@ -83,26 +84,50 @@ function ShowAllClients() {
       <div className="container">
         <div className='flex w-fit '>
           <ButtonGroup aria-label="Basic example">
-            <Button variant="secondary" onClick={() => setNewItems(tran)}>All {tran.length}</Button>
+            <Button
+              variant="secondary"
+              onClick={() => setfilteredItems(tran)}
+            >
+              All
+              {tran.length}
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                filterItem('buyer')
+              }}
+            >
+              Buyers
+              {showHowmanyBuyers(tran)}
+            </Button>
 
-            <Button variant="secondary" onClick={() => {
-              filterItem('buyer')
-            }}>Buyers {showHowmanyBuyers(tran)}</Button>
+            <Button
+              variant="secondary"
+              onClick={() => filterItem('seller')}
+            >
+              Sellers
+              {showHowmanySellers(tran)}
+            </Button>
 
-            <Button variant="secondary" onClick={() => filterItem('seller')}>Sellers {showHowmanySellers(tran)}</Button>
+            <Button
+              variant='secondary'
+              onClick={() => showHowmanyArchived(archivedTran)}
+            >
+              Archived
+              {archivedTran.length}
+            </Button>
 
-            <Button variant='secondary' onClick={() => showHowmanyArchived(archivedTran)}> Archived {archivedTran.length}</Button>
           </ButtonGroup>
         </div>
       </div>
       <Container className='flex justify-center gap-5 flex-wrap' fluid='sm'>
         {
-          newItems.map(client => {
+          filteredItems.map(client => {
             return (
               <div key={client._id} className="border p-3">
                 <div className="buttons">
                   <Button
-                    variant="danger" onClick={() => {
+                      variant="danger" onClick={() => {
                       archiveTransactions(client._id)
                       toast.success('Transactions has been Archived')
                     }}

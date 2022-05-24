@@ -26,6 +26,7 @@ export function useTransactions() {
   return context
 }
 
+
 export function TransacionsContainers({children}) {
   const navigae = useNavigate() 
   // this will run once and will get all the transactions 
@@ -37,6 +38,16 @@ export function TransacionsContainers({children}) {
   // initial state for the transacionts 
   const [tran, setTran] = useState([]) 
   const [archivedTran, setArchivedTran] = useState([])
+
+
+//   const [filteredItems, setfilteredItems] = useState([])
+
+// // filters the 
+// const filterItem = (transactionType) => {
+//   const newItem = tran.filter(tran => tran.transaction.toLowerCase() === transactionType
+//   )
+//   setfilteredItems(newItem)
+// };
 
   const getTransactions = async () => {
     const res = await getTransactionsRequest()
