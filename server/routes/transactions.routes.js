@@ -6,7 +6,7 @@ import {
   getTransactions,
   createTransactions,
   updateTransactions,
-  deleteTransaction,
+  archiveTransaction,
   getTransaction,
   getArchivedTransactions,
   restoreArchivedTransactions,
@@ -25,7 +25,7 @@ router.post('/transactions/add', createTransactions)
 router.put('/transactions/:id', updateTransactions)
 
 // // delete transaction
-router.delete('/transactions/:id', deleteTransaction)
+router.delete('/transactions/:id', archiveTransaction)
 
 // delete from DB for good
 router.delete('/transactions/delete/:id', deleteTransactionForGood)
@@ -33,9 +33,7 @@ router.delete('/transactions/delete/:id', deleteTransactionForGood)
 // // only get one transaction
 router.get('/transactions/edit/:id', getTransaction)
 
-// only get one transaction to show
-// router.get('/transactions/:id', getTransaction)
-
+// get all archive transactions
 router.get('/transactions/archived', getArchivedTransactions)
 
 // restore data

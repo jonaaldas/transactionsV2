@@ -7,6 +7,7 @@ import {
 import {
   getTransactionsRequest,
   createTransactionsRequest,
+  archiveTransactionRequest,
   deleteTransactionRequest,
   getSingleTransactionToEditRequest,
   editTransactionRequest,
@@ -14,6 +15,7 @@ import {
   getAllArchivedTransactionsRequest,
   restoreASingleTransactionRequest
 } from '../api/api';
+import {useNavigate} from 'react-router-dom' 
 
 // initial context
 export const TransacionsContext = createContext();
@@ -24,10 +26,8 @@ export function useTransactions() {
   return context
 }
 
-export function TransacionsContainers({
-  children
-}) {
-
+export function TransacionsContainers({children}) {
+  const navigae = useNavigate() 
   // this will run once and will get all the transactions 
   useEffect(() => {
     getTransactions()
@@ -35,11 +35,8 @@ export function TransacionsContainers({
   }, [])
 
   // initial state for the transacionts 
-  const [tran, setTran] = useState([])
+  const [tran, setTran] = useState([]) 
   const [archivedTran, setArchivedTran] = useState([])
-
-  // const clients = [...new Set(tran.map((Val) => Val.category))];
-  // console.log(clients)
 
   const getTransactions = async () => {
     const res = await getTransactionsRequest()
@@ -51,7 +48,14 @@ export function TransacionsContainers({
     setTran([...tran, res.data])
   }
 
-  const deleteTransactions = async (id) => {
+  const archiveTransactions = async (id) => {
+    const res = await archiveTransactionRequest(id)
+    if (res.status === 204) {
+      setTran(tran.filter(tran => tran._id !== id))
+    }
+  }
+  
+  const deleteTransaction = async (id) => {
     const res = await deleteTransactionRequest(id)
     if (res.status === 204) {
       setTran(tran.filter(tran => tran._id !== id))
@@ -113,7 +117,9 @@ export function TransacionsContainers({
 
   const restoreASingleTransaction = async (id) => {
     const res = await restoreASingleTransactionRequest(id)
-    if (res.status === 204) console.log('sucess')
+    if (res.status === 204) {
+      navigae('/')
+    }
   }
 
   return <TransacionsContext.Provider value = {
@@ -123,7 +129,8 @@ export function TransacionsContainers({
         setTran,
         getTransactions,
         createTransactions,
-        deleteTransactions,
+        archiveTransactions,
+        deleteTransaction,
         getSingleTransactionToView,
         editTransaction,
         getSingleTransactionToEdit,

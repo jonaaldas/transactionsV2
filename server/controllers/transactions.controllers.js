@@ -114,7 +114,7 @@ export const updateTransactions = async (req, res) => {
   }
 }
 
-export const deleteTransaction = async (req, res) => {
+export const archiveTransaction = async (req, res) => {
   try {
     const {
       id

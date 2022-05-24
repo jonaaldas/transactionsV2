@@ -7,14 +7,13 @@ import { useState, useEffect } from 'react'
 // This branch is to add the authintication only
 function ShowAllClients() {
   const navigate = useNavigate()
-  const { tran, deleteTransactions } = useTransactions()
+  const { tran, archiveTransactions, deleteTransaction, archivedTran, restoreASingleTransaction } = useTransactions()
   const [newItems, setNewItems] = useState([])
 
   useEffect(() => {
-    if (newItems.length === 0) {
-      setNewItems(tran)
-    }
-  },[])
+    console.log('i am being render')
+    setNewItems(newItems)
+  }, [])
 
   const filterItem = (transactionType) => {
     const newItem = tran.filter(tran => tran.transaction.toLowerCase() === transactionType
@@ -39,34 +38,107 @@ function ShowAllClients() {
     })
     return newArr.length
   }
+  const showHowmanyArchived = (tran) => {
+    setNewItems(tran)
+  }
+
+  // show how delete button in archive
+  const showDeleteBtnArchive = (arr) => {
+    if (arr.archivedAt) {
+      return (
+        <Button
+          variant="danger"
+          className='mx-2'
+          onClick={() => {
+            toast(t => (
+              <div className='flex flex-col justify-content-center align-self-center
+              '>
+                <h6>Are you sure?</h6>
+                <div>
+                  <Button
+                    className='mx-3'
+                    onClick={() => {
+                      deleteTransaction(arr._id)
+                      toast.success('Transactions has been deleted')
+                    }}
+                  >Yes</Button>
+                  <Button
+                    className='mx-3'
+                    onClick={() => toast.dismiss(t.id)}
+                  >No</Button>
+
+                </div>
+              </div>
+            ))
+          }}
+        >
+          Delete
+        </Button>
+      )
+    }
+  }
 
   return (
     <div className="container">
       <div className="container">
-        <div className='flex w-fit '>   
+        <div className='flex w-fit '>
           <ButtonGroup aria-label="Basic example">
             <Button variant="secondary" onClick={() => setNewItems(tran)}>All {tran.length}</Button>
+
             <Button variant="secondary" onClick={() => {
               filterItem('buyer')
             }}>Buyers {showHowmanyBuyers(tran)}</Button>
+
             <Button variant="secondary" onClick={() => filterItem('seller')}>Sellers {showHowmanySellers(tran)}</Button>
+
+            <Button variant='secondary' onClick={() => showHowmanyArchived(archivedTran)}> Archived {archivedTran.length}</Button>
           </ButtonGroup>
         </div>
       </div>
       <Container className='flex justify-center gap-5 flex-wrap' fluid='sm'>
         {
-          newItems.length === 0 ? <p> Its empty </p> : newItems.map(client => {
+          newItems.map(client => {
             return (
               <div key={client._id} className="border p-3">
                 <div className="buttons">
-                  <Button variant="danger" onClick={() => {
-                    deleteTransactions(client._id)
-                    toast.success('it has been deleted')
-                  }} className='edit-btn' >Delete</Button>{' '}
-                  <Button variant="secondary" className='edit-btn'
+                  <Button
+                    variant="danger" onClick={() => {
+                      archiveTransactions(client._id)
+                      toast.success('Transactions has been Archived')
+                    }}
+                    className='edit-btn mx-2'
+                    style={!client.archivedAt ? { display: 'inline-block' } : { display: 'none' }}
+                  >
+                    Archive
+                  </Button>
+
+                  <Button
+                    variant="secondary"
+                    className='edit-btn mx-2'
+                    style={!client.archivedAt ? { display: 'inline-block' } : { display: 'none' }}
                     onClick={() => navigate(`transactions/edit/${client._id}`)}
-                  >Edit</Button>{' '}
-                  <Button variant="secondary" onClick={() => navigate(`transactions/${client._id}`)}>See More</Button>
+                  >
+                    Edit
+                  </Button>
+
+                  <Button
+                    variant="secondary"
+                    className='mx-2'
+                    onClick={() => {
+                      if (client.archivedAt) {
+                        restoreASingleTransaction(client._id)
+                        toast.success('Transactions has been un Archived')
+                      } else {
+                        navigate(`transactions/${client._id}`)
+                      }
+                    }}
+                  >
+                    {client.archivedAt ? 'unArchived' : 'SeeMore'}
+                  </Button>
+
+                  {
+                    showDeleteBtnArchive(client)
+                  }
                 </div>
                 <Row>
                   <Col className='h-16 flex justify-center'>

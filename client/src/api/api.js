@@ -8,8 +8,12 @@ export const createTransactionsRequest = async (post) => {
   return await axios.post('/transactions/add', post)
 }
 
-export const deleteTransactionRequest = async (id) => {
+export const archiveTransactionRequest = async (id) => {
   return await axios.delete('/transactions/' + id)
+}
+
+export const deleteTransactionRequest = async (id) => {
+  return await axios.delete('/transactions/delete/' + id)
 }
 
 export const getSingleTransactionToEditRequest = async (id) => {
