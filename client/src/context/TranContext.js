@@ -29,29 +29,25 @@ export function useTransactions() {
 
 export function TransacionsContainers({children}) {
   const navigae = useNavigate() 
-  // this will run once and will get all the transactions 
+  // initial state for the transacionts from data base
+  const [tran, setTran] = useState([]) 
+  // inital state from archive tran fomr database
+  const [archivedTran, setArchivedTran] = useState([])
+  // filtered state for buttons
+  const [filteredItems, setFilteredItems] = useState([])
+  // flag to compare buttons
+  const [activeButtons, setActiveButtons] = useState('')
+
+    // this will run once and will get all the transactions 
   useEffect(() => {
     getTransactions()
     getAllArchivedTransactions()
-  }, [])
-
-  // initial state for the transacionts 
-  const [tran, setTran] = useState([]) 
-  const [archivedTran, setArchivedTran] = useState([])
-
-
-//   const [filteredItems, setfilteredItems] = useState([])
-
-// // filters the 
-// const filterItem = (transactionType) => {
-//   const newItem = tran.filter(tran => tran.transaction.toLowerCase() === transactionType
-//   )
-//   setfilteredItems(newItem)
-// };
+  },[])
 
   const getTransactions = async () => {
     const res = await getTransactionsRequest()
     setTran(res.data)
+    setFilteredItems(res.data)
   }
 
   const createTransactions = async (post) => {
@@ -133,10 +129,18 @@ export function TransacionsContainers({children}) {
     }
   }
 
+  function refreshPage() {
+    window.location.reload(false);
+  }
+
   return <TransacionsContext.Provider value = {
       {
         tran,
         archivedTran,
+        filteredItems,
+        setFilteredItems,
+        activeButtons,
+        setActiveButtons,
         setTran,
         getTransactions,
         createTransactions,
@@ -147,7 +151,8 @@ export function TransacionsContainers({children}) {
         getSingleTransactionToEdit,
         handleChecked,
         getAllArchivedTransactions,
-        restoreASingleTransaction
+        restoreASingleTransaction,
+        refreshPage
       }
     } > {
       children

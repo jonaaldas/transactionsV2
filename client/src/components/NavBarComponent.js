@@ -14,6 +14,9 @@ function NavBarComponent() {
               <NavItem>
                 <Link className="nav-link" to="/">Home</Link>
               </NavItem>
+              <NavItem>
+                <Link className="nav-link" to="/transactions/archived">Archvies</Link>
+              </NavItem>
             </Nav>
           </Navbar.Collapse>
         </Container>

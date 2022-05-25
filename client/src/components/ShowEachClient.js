@@ -1,9 +1,10 @@
-import {Button} from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { useTransactions } from "../context/TranContext";
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 function ShowEachClient() {
+  const navigate = useNavigate()
   const params = useParams()
-  const { tran, handleChecked } = useTransactions();
+  const { tran, handleChecked, archiveTransactions, refreshPage } = useTransactions();
 
   const eachTran = tran.filter(tran => {
     if (tran._id === params.id) {
@@ -23,25 +24,22 @@ function ShowEachClient() {
             <p><strong className="bold">Price:</strong> ${tran.price}</p>
           </div>
 
-          <div className="w-100 flex flex-col align-items-center justify-start">
+          <div className="w-100 flex flex-col align-items-center justify-content-between" style={{"height": "40vh"}}>
             {
               tran.seller.sellerq.map(q => {
                 return (
-                  <>
+                  <div className="flex align-items-center justify-content-between" style={{ "width": "90%", "maxWidth": "30%"}} key={q._id}>
                     <hr />
-                    <div className="flex align-items-center" style={{ "width": "90%", "maxWidth": "60%" }} key={q._id} >
-                      <input
-                        className="mx-4 w-25"
-                        type="checkbox"
-                        id="action"
-                        name="action"
-                        checked={q.checked}
-                        onChange={() => handleChecked(q._id, tran._id)}
-                      />
-                      <label className="text-center col" htmlFor="action1">{q.action}</label>
-                    </div>
-                    <br />
-                  </>
+                    <input
+                      className="mx-4 w-25"
+                      type="checkbox"
+                      id="action"
+                      name="action"
+                      checked={q.checked}
+                      onChange={() => handleChecked(q._id, tran._id)}
+                    />
+                    <label className="text-center col" htmlFor="action1">{q.action}</label>
+                  </div>
                 )
               })
             }
@@ -59,7 +57,7 @@ function ShowEachClient() {
             <p><strong className="bold">Address:</strong> {tran.address}</p>
             <p><strong className="bold">Price:</strong> ${tran.price}</p>
           </div>
-          
+
           <div className="w-100 flex flex-col align-items-center justify-start">
             {
               tran.buyer.buyerq.map(q => {
@@ -87,15 +85,18 @@ function ShowEachClient() {
       )
     }
   })
-
-  // 
-  // 
   return (
     <>
-    <div className="container flex justify-center">
-      {eachTran}
-    </div>
-      <Button variant='primary'>Closed!</Button>
+      <div className="container flex justify-center">
+        {eachTran}
+      </div>
+      <div className='flex justify-center'>
+        <Button variant='secondary' onClick={() => {
+          archiveTransactions(params.id)
+          navigate('/')
+          refreshPage()
+        }}>Closed</Button>
+      </div>
     </>
   );
 }

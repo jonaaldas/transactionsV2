@@ -3,126 +3,27 @@ import { useNavigate } from 'react-router-dom'
 import { useTransactions } from '../context/TranContext'
 import toast from 'react-hot-toast'
 import { useState, useEffect } from 'react'
+import FilterButtons from './FilterButtons'
+import {VscEmptyWindow} from 'react-icons/vsc'
 
 // This branch is to add the authintication only
 function ShowAllClients() {
   const navigate = useNavigate()
-  const { tran, archiveTransactions, deleteTransaction, archivedTran, restoreASingleTransaction } = useTransactions()
-  const [filteredItems, setfilteredItems] = useState([])
-
-  const filterItem = (transactionType) => {
-    const newItem = tran.filter(tran => tran.transaction.toLowerCase() === transactionType
-    )
-    setfilteredItems(newItem)
-  };
-
-  useEffect(() => {
-    setfilteredItems(tran)
-  }, [])
-
-
-
-
-  const showHowmanyBuyers = (tran) => {
-    const newArr = tran.filter(each => {
-      if (each.transaction.toLowerCase() === 'buyer') {
-        return each
-      }
-    })
-    return newArr.length
-  }
-  const showHowmanySellers = (tran) => {
-    const newArr = tran.filter(each => {
-      if (each.transaction.toLowerCase() === 'seller') {
-        return each
-      }
-    })
-    return newArr.length
-  }
-  const showHowmanyArchived = (tran) => {
-    setfilteredItems(tran)
-  }
-
-  // show how delete button in archive
-  const showDeleteBtnArchive = (arr) => {
-    if (arr.archivedAt) {
-      return (
-        <Button
-          variant="danger"
-          className='mx-2'
-          onClick={() => {
-            toast(t => (
-              <div className='flex flex-col justify-content-center align-self-center
-              '>
-                <h6>Are you sure?</h6>
-                <div>
-                  <Button
-                    className='mx-3'
-                    onClick={() => {
-                      deleteTransaction(arr._id)
-                      toast.success('Transactions has been deleted')
-                    }}
-                  >Yes</Button>
-                  <Button
-                    className='mx-3'
-                    onClick={() => toast.dismiss(t.id)}
-                  >No</Button>
-
-                </div>
-              </div>
-            ))
-          }}
-        >
-          Delete
-        </Button>
-      )
-    }
-  }
+  const { archiveTransactions, filteredItems, refreshPage} = useTransactions()
+ 
 
   return (
     <div className="container">
-      <div className="container">
-        <div className='flex w-fit '>
-          <ButtonGroup aria-label="Basic example">
-            <Button
-              variant="secondary"
-              onClick={() => setfilteredItems(tran)}
-            >
-              All
-              {tran.length}
-            </Button>
-            <Button
-              variant="secondary"
-              onClick={() => {
-                filterItem('buyer')
-              }}
-            >
-              Buyers
-              {showHowmanyBuyers(tran)}
-            </Button>
-
-            <Button
-              variant="secondary"
-              onClick={() => filterItem('seller')}
-            >
-              Sellers
-              {showHowmanySellers(tran)}
-            </Button>
-
-            <Button
-              variant='secondary'
-              onClick={() => showHowmanyArchived(archivedTran)}
-            >
-              Archived
-              {archivedTran.length}
-            </Button>
-
-          </ButtonGroup>
-        </div>
-      </div>
+      <FilterButtons/>
       <Container className='flex justify-center gap-5 flex-wrap' fluid='sm'>
         {
-          filteredItems.map(client => {
+          filteredItems.length === 0 ?
+          (<div className="flex flex-col align-items-center">
+          <VscEmptyWindow className='w-48 h-48 text-black text-center' />
+          <h1 className='text-black text-2xl text-center'>There are no Transactions</h1>
+          </div>
+          ) :
+           filteredItems.map(client => {
             return (
               <div key={client._id} className="border p-3">
                 <div className="buttons">
@@ -130,9 +31,9 @@ function ShowAllClients() {
                       variant="danger" onClick={() => {
                       archiveTransactions(client._id)
                       toast.success('Transactions has been Archived')
+                      refreshPage()
                     }}
                     className='edit-btn mx-2'
-                    style={!client.archivedAt ? { display: 'inline-block' } : { display: 'none' }}
                   >
                     Archive
                   </Button>
@@ -140,7 +41,6 @@ function ShowAllClients() {
                   <Button
                     variant="secondary"
                     className='edit-btn mx-2'
-                    style={!client.archivedAt ? { display: 'inline-block' } : { display: 'none' }}
                     onClick={() => navigate(`transactions/edit/${client._id}`)}
                   >
                     Edit
@@ -149,21 +49,10 @@ function ShowAllClients() {
                   <Button
                     variant="secondary"
                     className='mx-2'
-                    onClick={() => {
-                      if (client.archivedAt) {
-                        restoreASingleTransaction(client._id)
-                        toast.success('Transactions has been un Archived')
-                      } else {
-                        navigate(`transactions/${client._id}`)
-                      }
-                    }}
+                    onClick={() => navigate(`transactions/${client._id}`)}
                   >
-                    {client.archivedAt ? 'unArchived' : 'SeeMore'}
+                    See More
                   </Button>
-
-                  {
-                    showDeleteBtnArchive(client)
-                  }
                 </div>
                 <Row>
                   <Col className='h-16 flex justify-center'>
