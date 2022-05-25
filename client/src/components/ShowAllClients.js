@@ -3,69 +3,56 @@ import { useNavigate } from 'react-router-dom'
 import { useTransactions } from '../context/TranContext'
 import toast from 'react-hot-toast'
 import { useState, useEffect } from 'react'
+import FilterButtons from './FilterButtons'
+import {VscEmptyWindow} from 'react-icons/vsc'
 
+// This branch is to add the authintication only
 function ShowAllClients() {
   const navigate = useNavigate()
-  const { tran, deleteTransactions } = useTransactions()
-  const [newItems, setNewItems] = useState([])
-
-  useEffect(() => {
-    if (newItems.length === 0) {
-      setNewItems(tran)
-    }
-  },[])
-
-  const filterItem = (transactionType) => {
-    const newItem = tran.filter(tran => tran.transaction.toLowerCase() === transactionType
-    )
-    setNewItems(newItem)
-  };
-
-
-  const showHowmanyBuyers = (tran) => {
-    const newArr = tran.filter(each => {
-      if (each.transaction.toLowerCase() === 'buyer') {
-        return each
-      }
-    })
-    return newArr.length
-  }
-  const showHowmanySellers = (tran) => {
-    const newArr = tran.filter(each => {
-      if (each.transaction.toLowerCase() === 'seller') {
-        return each
-      }
-    })
-    return newArr.length
-  }
+  const { archiveTransactions, filteredItems, refreshPage} = useTransactions()
+ 
 
   return (
     <div className="container">
-      <div className="container">
-        <div className='flex w-fit '>   
-          <ButtonGroup aria-label="Basic example">
-            <Button variant="secondary" onClick={() => setNewItems(tran)}>All {tran.length}</Button>
-            <Button variant="secondary" onClick={() => {
-              filterItem('buyer')
-            }}>Buyers {showHowmanyBuyers(tran)}</Button>
-            <Button variant="secondary" onClick={() => filterItem('seller')}>Sellers {showHowmanySellers(tran)}</Button>
-          </ButtonGroup>
-        </div>
-      </div>
+      <FilterButtons/>
       <Container className='flex justify-center gap-5 flex-wrap' fluid='sm'>
         {
-          newItems.length === 0 ? <p> Its empty </p> : newItems.map(client => {
+          filteredItems.length === 0 ?
+          (<div className="flex flex-col align-items-center">
+          <VscEmptyWindow className='w-48 h-48 text-black text-center' />
+          <h1 className='text-black text-2xl text-center'>There are no Transactions</h1>
+          </div>
+          ) :
+           filteredItems.map(client => {
             return (
               <div key={client._id} className="border p-3">
                 <div className="buttons">
-                  <Button variant="danger" onClick={() => {
-                    deleteTransactions(client._id)
-                    toast.success('it has been deleted')
-                  }} className='edit-btn' >Delete</Button>{' '}
-                  <Button variant="secondary" className='edit-btn'
-                    onClick={() => navigate(`transaction/edit/${client._id}`)}
-                  >Edit</Button>{' '}
-                  <Button variant="secondary" onClick={() => navigate(`transaction/${client._id}`)}>See More</Button>
+                  <Button
+                      variant="danger" onClick={() => {
+                      archiveTransactions(client._id)
+                      toast.success('Transactions has been Archived')
+                      refreshPage()
+                    }}
+                    className='edit-btn mx-2'
+                  >
+                    Archive
+                  </Button>
+
+                  <Button
+                    variant="secondary"
+                    className='edit-btn mx-2'
+                    onClick={() => navigate(`transactions/edit/${client._id}`)}
+                  >
+                    Edit
+                  </Button>
+
+                  <Button
+                    variant="secondary"
+                    className='mx-2'
+                    onClick={() => navigate(`transactions/${client._id}`)}
+                  >
+                    See More
+                  </Button>
                 </div>
                 <Row>
                   <Col className='h-16 flex justify-center'>

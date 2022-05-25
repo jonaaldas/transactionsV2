@@ -6,8 +6,11 @@ import {
   getTransactions,
   createTransactions,
   updateTransactions,
-  deleteTransaction,
-  getTransaction
+  archiveTransaction,
+  getTransaction,
+  getArchivedTransactions,
+  restoreArchivedTransactions,
+  deleteTransactionForGood
 } from '../controllers/transactions.controllers.js'
 
 const router = Router()
@@ -15,19 +18,25 @@ const router = Router()
 // show all posts
 router.get('/transactions', getTransactions)
 
-// create a new client
-router.post('/transactions', createTransactions)
+// create a new transaction
+router.post('/transactions/add', createTransactions)
 
-// // update client
+// // update transaction
 router.put('/transactions/:id', updateTransactions)
 
-// // delete clients
-router.delete('/transactions/:id', deleteTransaction)
+// // delete transaction
+router.delete('/transactions/:id', archiveTransaction)
 
-// // only get one client
+// delete from DB for good
+router.delete('/transactions/delete/:id', deleteTransactionForGood)
+
+// // only get one transaction
 router.get('/transactions/edit/:id', getTransaction)
 
-// only get one transaction to edit
-router.get('/transactions/:id', getTransaction)
+// get all archive transactions
+router.get('/transactions/archived', getArchivedTransactions)
+
+// restore data
+router.get('/transactions/restore/archived/:id', restoreArchivedTransactions)
 
 export default router

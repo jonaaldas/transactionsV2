@@ -14,12 +14,15 @@ function NavBarComponent() {
               <NavItem>
                 <Link className="nav-link" to="/">Home</Link>
               </NavItem>
+              <NavItem>
+                <Link className="nav-link" to="/transactions/archived">Archvies</Link>
+              </NavItem>
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
       <div className="w-full flex items-center justify-center py-4">
-        <Link to={`/transaction`}>
+        <Link to={`/transactions/add`}>
           <Button className='add-transaction-btn center' variant='secondary'>Add New Transaction</Button>
         </Link>
       </div>

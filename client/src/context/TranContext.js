@@ -7,11 +7,15 @@ import {
 import {
   getTransactionsRequest,
   createTransactionsRequest,
+  archiveTransactionRequest,
   deleteTransactionRequest,
   getSingleTransactionToEditRequest,
   editTransactionRequest,
-  getSingleTransactionToViewRequest
+  getSingleTransactionToViewRequest,
+  getAllArchivedTransactionsRequest,
+  restoreASingleTransactionRequest
 } from '../api/api';
+import {useNavigate} from 'react-router-dom' 
 
 // initial context
 export const TransacionsContext = createContext();
@@ -22,24 +26,28 @@ export function useTransactions() {
   return context
 }
 
-export function TransacionsContainers({
-  children
-}) {
 
-  // this will run once and will get all the transactions 
+export function TransacionsContainers({children}) {
+  const navigae = useNavigate() 
+  // initial state for the transacionts from data base
+  const [tran, setTran] = useState([]) 
+  // inital state from archive tran fomr database
+  const [archivedTran, setArchivedTran] = useState([])
+  // filtered state for buttons
+  const [filteredItems, setFilteredItems] = useState([])
+  // flag to compare buttons
+  const [activeButtons, setActiveButtons] = useState('')
+
+    // this will run once and will get all the transactions 
   useEffect(() => {
     getTransactions()
-  }, [])
-
-  // initial state for the transacionts 
-  const [tran, setTran] = useState([])
-
-  // const clients = [...new Set(tran.map((Val) => Val.category))];
-  // console.log(clients)
+    getAllArchivedTransactions()
+  },[])
 
   const getTransactions = async () => {
     const res = await getTransactionsRequest()
     setTran(res.data)
+    setFilteredItems(res.data)
   }
 
   const createTransactions = async (post) => {
@@ -47,7 +55,14 @@ export function TransacionsContainers({
     setTran([...tran, res.data])
   }
 
-  const deleteTransactions = async (id) => {
+  const archiveTransactions = async (id) => {
+    const res = await archiveTransactionRequest(id)
+    if (res.status === 204) {
+      setTran(tran.filter(tran => tran._id !== id))
+    }
+  }
+  
+  const deleteTransaction = async (id) => {
     const res = await deleteTransactionRequest(id)
     if (res.status === 204) {
       setTran(tran.filter(tran => tran._id !== id))
@@ -102,18 +117,42 @@ export function TransacionsContainers({
       }
   }
 
+  const getAllArchivedTransactions = async () => {
+    const res = await getAllArchivedTransactionsRequest()
+    setArchivedTran(res.data)    
+  }
+
+  const restoreASingleTransaction = async (id) => {
+    const res = await restoreASingleTransactionRequest(id)
+    if (res.status === 204) {
+      navigae('/')
+    }
+  }
+
+  function refreshPage() {
+    window.location.reload(false);
+  }
 
   return <TransacionsContext.Provider value = {
       {
         tran,
+        archivedTran,
+        filteredItems,
+        setFilteredItems,
+        activeButtons,
+        setActiveButtons,
         setTran,
         getTransactions,
         createTransactions,
-        deleteTransactions,
+        archiveTransactions,
+        deleteTransaction,
         getSingleTransactionToView,
         editTransaction,
         getSingleTransactionToEdit,
-        handleChecked
+        handleChecked,
+        getAllArchivedTransactions,
+        restoreASingleTransaction,
+        refreshPage
       }
     } > {
       children

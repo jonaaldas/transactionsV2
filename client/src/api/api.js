@@ -5,11 +5,15 @@ export const getTransactionsRequest = async () => {
 }
 
 export const createTransactionsRequest = async (post) => {
-  return await axios.post('/transactions', post)
+  return await axios.post('/transactions/add', post)
+}
+
+export const archiveTransactionRequest = async (id) => {
+  return await axios.delete('/transactions/' + id)
 }
 
 export const deleteTransactionRequest = async (id) => {
-  return await axios.delete('/transactions/' + id)
+  return await axios.delete('/transactions/delete/' + id)
 }
 
 export const getSingleTransactionToEditRequest = async (id) => {
@@ -22,5 +26,14 @@ export const getSingleTransactionToViewRequest = async (id) => {
 
 export const editTransactionRequest = async (id, newFields) => {
   return await axios.put('/transactions/' + id, newFields)
+}
+
+
+export const getAllArchivedTransactionsRequest = async () => {
+  return await axios.get('/transactions/archived')
+}
+
+export const restoreASingleTransactionRequest = async (id) => {
+  return await axios.get('/transactions/restore/archived/' + id)
 }
 
