@@ -93,7 +93,7 @@ function ShowEachClient() {
       <div className='flex justify-center'>
         <Button variant='secondary' onClick={() => {
           archiveTransactions(params.id)
-          navigate('/')
+          navigate('/transactions')
           refreshPage()
         }}>Closed</Button>
       </div>

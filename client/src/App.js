@@ -13,7 +13,7 @@ function App() {
   return (
     <TransacionsContainers>
       <Routes>
-        <Route exact path='/' element={<Home />} />
+        <Route exact path='/transactions' element={<Home />} />
         <Route path='/transactions/add' element={<Form />} />
         <Route path='/transactions/edit/:id' element={<Form />} />
         <Route path='/transactions/:id' element={<EachClient />} />
