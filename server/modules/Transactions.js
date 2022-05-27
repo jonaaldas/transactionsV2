@@ -50,6 +50,11 @@ const sellerSchema = new mongoose.Schema({
 })
 
 const clientSchema = new mongoose.Schema({
+  user:{
+    type: mongoose.Schema.Types.ObjectId, 
+    required: true,
+    ref: 'User'
+  },
   transaction: {
     type: String,
     required: true,

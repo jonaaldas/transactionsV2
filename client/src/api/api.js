@@ -1,5 +1,9 @@
 import axios from 'axios'
 
+export const auth0Request = async () => {
+  return await axios.get('/')
+}
+
 export const getTransactionsRequest = async () => {
   return await axios.get('/transactions')
 }
