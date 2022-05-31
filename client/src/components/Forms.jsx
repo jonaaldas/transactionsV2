@@ -54,7 +54,7 @@ function Forms() {
         } else {
           await createTransactions(values)
         }
-        navigate('/transactions')
+        navigate('/')
       }}
       enableReinitialize
     >

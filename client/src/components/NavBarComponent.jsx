@@ -6,7 +6,7 @@ function NavBarComponent() {
       <Navbar bg="light" expand="lg" sticky='top'>
         <Container>
           <Navbar.Brand>
-            <Link className="nav-link text-secondary" to="/transactions">Transaction Managment</Link>
+            <Link className="nav-link text-secondary" to="/">Transaction Managment</Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -16,6 +16,12 @@ function NavBarComponent() {
               </NavItem>
               <NavItem>
                 <Link className="nav-link" to="/transactions/archived">Archvies</Link>
+              </NavItem>
+              <NavItem>
+                <Link className="nav-link" to="/login">Login</Link>
+              </NavItem>
+              <NavItem>
+                <Link className="nav-link" to="/register">Register</Link>
               </NavItem>
             </Nav>
           </Navbar.Collapse>

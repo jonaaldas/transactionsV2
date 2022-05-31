@@ -1,15 +1,11 @@
 import axios from 'axios'
 
-export const auth0Request = async () => {
-  return await axios.get('/')
-}
-
 export const getTransactionsRequest = async () => {
   return await axios.get('/transactions')
 }
 
 export const createTransactionsRequest = async (post) => {
-  return await axios.post('/transactions/add', post)
+  return await axios.post('/transactions/add/', post)
 }
 
 export const archiveTransactionRequest = async (id) => {
@@ -40,4 +36,3 @@ export const getAllArchivedTransactionsRequest = async () => {
 export const restoreASingleTransactionRequest = async (id) => {
   return await axios.get('/transactions/restore/archived/' + id)
 }
-

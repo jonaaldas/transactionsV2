@@ -12,31 +12,31 @@ import {
   restoreArchivedTransactions,
   deleteTransactionForGood
 } from '../controllers/transactions.controllers.js'
-import {protect} from '../middleware/authMiddleware.js'
+
 const router = Router()
 
 // show all posts
-router.get('/transactions',protect, getTransactions)
+router.get('/transactions', getTransactions)
 
 // create a new transaction
-router.post('/transactions/add', protect, createTransactions)
+router.post('/transactions/add/', createTransactions)
 
 // // update transaction
-router.put('/transactions/:id', protect,updateTransactions)
+router.put('/transactions/:id', updateTransactions)
 
-// // archive transaction
-router.delete('/transactions/:id', protect, archiveTransaction)
+// // delete transaction
+router.delete('/transactions/:id', archiveTransaction)
 
 // delete from DB for good
-router.delete('/transactions/delete/:id', protect, deleteTransactionForGood)
+router.delete('/transactions/delete/:id', deleteTransactionForGood)
 
 // // only get one transaction
-router.get('/transaction/:id',protect, getTransaction)
+router.get('/transactions/edit/:id', getTransaction)
 
 // get all archive transactions
-router.get('/transactions/archived',protect, getArchivedTransactions)
+router.get('/transactions/archived', getArchivedTransactions)
 
 // restore data
-router.get('/transactions/restore/archived/:id',protect, restoreArchivedTransactions)
+router.get('/transactions/restore/archived/:id', restoreArchivedTransactions)
 
 export default router

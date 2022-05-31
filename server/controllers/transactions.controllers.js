@@ -1,13 +1,10 @@
 import Transactions from "../modules/Transactions.js";
-import User from "../modules/userModels.js";
 
 
 export const getTransactions = async (req, res) => {
   try {
     // searching all the post and it has to be async
-    const tran = await Transactions.find({
-      user: req.user.id
-    })
+    const tran = await Transactions.find()
     return res.json(tran);
   } catch (err) {
     console.error(error.message)
@@ -41,8 +38,7 @@ export const createTransactions = async (req, res) => {
       price,
       buyer,
       seller,
-      closed,
-      user: req.user.id
+      closed
     })
     tran.buyer = {
       buyerq: [{
@@ -105,21 +101,6 @@ export const createTransactions = async (req, res) => {
 
 export const updateTransactions = async (req, res) => {
   try {
-    // find the transaction
-    const tran = await Transactions.findById(req.params.id)
-    // finding the user first 
-    const user = await User.findById(req.user.id)
-    // check for user
-    if (!user) {
-      res.status(401)
-      throw new Error('No user found')
-    }
-    // Make sure only logged in user matches the transaction user
-    if (tran.user.toString() !== req.user.id) {
-      res.status(401)
-      throw new Error('User not authorized')
-    }
-
     // this returns the old post that is not updated 
     const updatedTran = await Transactions.findByIdAndUpdate(req.params.id, req.body, {
       new: true
@@ -133,30 +114,12 @@ export const updateTransactions = async (req, res) => {
   }
 }
 
-// this is to archive a transaction
 export const archiveTransaction = async (req, res) => {
   try {
     const {
       id
     } = req.params
-    // we find the transaction
     const tran = await Transactions.findById(id)
-
-    // finding the user first 
-    const user = await User.findById(req.user.id)
-
-    // check for user
-    if (!user) {
-      res.status(401)
-      throw new Error('No user found')
-    
-    }
-    // Make sure only logged in user matches the transaction user
-    if (tran.user.toString() !== req.user.id) {
-      res.status(401)
-      throw new Error('User not authorized')
-    }
-
     tran.archive()
     if (!tran) return res.sendStatus(404);
     return res.sendStatus(204);
@@ -174,28 +137,8 @@ export const deleteTransactionForGood = async (req, res) => {
     const {
       id
     } = req.params
-
-    // we find the transaction
-    const tran = await Transactions.findById(id)
-
-
-    // finding the user first 
-    const user = await User.findById(req.user.id)
-
-    // check for user
-    if (!user) {
-      res.status(401)
-      throw new Error('No user found')
-    
-    }
-    // Make sure only logged in user matches the transaction user
-    if (tran.user.toString() !== req.user.id) {
-      res.status(401)
-      throw new Error('User not authorized')
-    }
-    
-    const tranToDelete = await Transactions.findByIdAndDelete(id)
-    if (!tranToDelete) return res.sendStatus(404);
+    const tran = await Transactions.findByIdAndDelete(id)
+    if (!tran) return res.sendStatus(404);
     return res.sendStatus(204);
   } catch (err) {
     console.error(error.message)
@@ -211,24 +154,7 @@ export const getTransaction = async (req, res) => {
     const {
       id
     } = req.params
-    // we get the transaction
     const tran = await Transactions.findById(id)
-
-    // finding the user first 
-    const user = await User.findById(req.user.id)
-
-    // check for user
-    if (!user) {
-      res.status(401)
-      throw new Error('No user found')
-    
-    }
-    // Make sure only logged in user matches the transaction user
-    if (tran.user.toString() !== req.user.id) {
-      res.status(401)
-      throw new Error('User not authorized')
-    }
-// come back to this one
     if (!tran) return res.sendStatus(404);
     return res.json(tran)
   } catch (err) {
@@ -240,13 +166,9 @@ export const getTransaction = async (req, res) => {
 }
 
 
-// get all archived transactions
 export const getArchivedTransactions = async (req, res) => {
   try {
-    const archivedData = await Transactions.find().where('archivedAt').exists().findOne({
-      user: req.user.id
-    });
-    
+    const archivedData = await Transactions.find().where('archivedAt').exists();
     return res.json(archivedData);
   } catch (err) {
     console.error(error.message)
@@ -261,24 +183,7 @@ export const restoreArchivedTransactions = async (req, res) => {
     const {
       id
     } = req.params
-
-     // finding the user first 
-     const user = await User.findById(req.user.id)
-     // check for user
-     if (!user) {
-       res.status(401)
-       throw new Error('No user found')
-     }
-     const archivedData = await Transactions.find().where('archivedAt').exists().findOne({
-      _id: `${id}`
-    });
- 
-     // Make sure only logged in user matches the transaction user
-     if (archivedData.user.toString() !== req.user.id) {
-       res.status(401)
-       throw new Error('User not authorized')
-     }
-  
+    const archivedData = await Transactions.find().where('archivedAt').exists().findOne({_id: `${id}`});
     archivedData.restore();
     if (!archivedData) return res.sendStatus(404);
     return res.sendStatus(204);

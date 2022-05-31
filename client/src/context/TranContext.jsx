@@ -13,8 +13,7 @@ import {
   editTransactionRequest,
   getSingleTransactionToViewRequest,
   getAllArchivedTransactionsRequest,
-  restoreASingleTransactionRequest,
-  auth0Request
+  restoreASingleTransactionRequest
 } from '../api/api';
 import {useNavigate} from 'react-router-dom' 
 
@@ -44,11 +43,6 @@ export function TransacionsContainers({children}) {
     getTransactions()
     getAllArchivedTransactions()
   },[])
-
-  const auth0 = async () => {
-    const res = await auth0Request()
-    console.log(res)
-  }
 
   const getTransactions = async () => {
     const res = await getTransactionsRequest()
@@ -158,8 +152,7 @@ export function TransacionsContainers({children}) {
         handleChecked,
         getAllArchivedTransactions,
         restoreASingleTransaction,
-        refreshPage,
-        auth0
+        refreshPage
       }
     } > {
       children
