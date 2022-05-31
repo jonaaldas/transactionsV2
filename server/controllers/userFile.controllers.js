@@ -35,15 +35,16 @@ export const registerUser = async (req, res) => {
       password: hashedPassword,
       email,
     })
-    // await user.save()
+    const token = jwt.sign({id: user._id,}, process.env.JWT_SECRET)
     if (user) {
       res.status(201).json({
         _id: user.id,
         name: user.name,
         email: user.email,
-        token: generateToken(user.id)
+        token: token
       })
     }
+    await user.save()
   } catch (error) {
     console.error(error.message)
     return res.status(500).json({
@@ -52,7 +53,7 @@ export const registerUser = async (req, res) => {
   }
 }
 
-export const logInUser = async (req, res) => {
+export const logInUser = async (req, res, next) => {
   try {
     const {
       email,
@@ -63,12 +64,16 @@ export const logInUser = async (req, res) => {
       email
     })
 
+    const token = jwt.sign({id: user._id,}, process.env.JWT_SECRET)
+    // comparing if password and see if user exist
     if (user && (await bcryptjs.compare(password, user.password))) {
-      res.json({
+      res.cookie('acces_token', token, {
+        httpOnly: true,
+      }).json({
         _id: user.id,
         name: user.name,
         email: user.email,
-        token: generateToken(user.id)
+        token: token
       })
     }
   } catch (error) {
@@ -81,18 +86,24 @@ export const logInUser = async (req, res) => {
 
 
 // generate a jwt
-const generateToken = (id) => {
- return jwt.sign({id}, process.env.JWT_SECRET, {
-   expiresIn: '30d'
- })
-}
+// const generateToken = (id) => {
+//   return jwt.sign({
+//     id
+//   }, process.env.JWT_SECRET, {
+//     expiresIn: '30d'
+//   })
+// }
 
 export const getUserData = async (req, res) => {
-  const {_id, name, email } = await User.findById(req.user.id)
-
-  res.status(200).json({
-    id: _id,
-    name, 
-    email
-  })
+  // const {
+  //   _id,
+  //   name,
+  //   email
+  // } = await User.findById(req.user._id)
+  console.log(req.user)
+  // res.status(200).json({
+  //   id: _id,
+  //   name,
+  //   email
+  // })
 }

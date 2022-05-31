@@ -7,7 +7,7 @@ const router = Router()
 
 router.post('/register', registerUser)
 router.post('/login', logInUser)
-router.get('/transactions/me', protect, getUserData)
+router.get('/transactions/me', getUserData)
 
 
 export default router

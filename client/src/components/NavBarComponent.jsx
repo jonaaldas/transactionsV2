@@ -12,7 +12,7 @@ function NavBarComponent() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <NavItem>
-                <Link className="nav-link" to="/transactions">Home</Link>
+                <Link className="nav-link" to="/">Home</Link>
               </NavItem>
               <NavItem>
                 <Link className="nav-link" to="/transactions/archived">Archvies</Link>

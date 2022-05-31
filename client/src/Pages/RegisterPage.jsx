@@ -1,7 +1,7 @@
-import Register from "../components/Register";
-
+// import Register from "../components/Register";
+import  LogoutButton  from '../components/LogoutButton';
 function RegisterPage() {
-  return (  <Register/>);
+  return (  <LogoutButton/>);
 }
 
 export default RegisterPage;

@@ -3,8 +3,7 @@ import cors from 'cors'
 import {mongodb} from './routes/db.js'
 import transactionsRoutes from './routes/transactions.routes.js'
 import userRoutes from './routes/userFile.routes.js'
-import {auth} from 'express-openid-connect'
-
+import cookieParser from 'cookie-parser';
 // initialize express
 const app = express();
 
@@ -16,6 +15,8 @@ app.use(
   })
 )
 
+// middleware
+app.use(cookieParser())
 // 
 app.use(express.json())
 // runing the server and importing it from routes
