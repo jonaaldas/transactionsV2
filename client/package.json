@@ -48,5 +48,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:4026"
+  "proxy": "https://transactions-managment.herokuapp.com"
 }

@@ -3,6 +3,8 @@ import cors from 'cors'
 import {mongodb} from './routes/db.js'
 import transactionsRoutes from './routes/transactions.routes.js'
 import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv'
+dotenv.config()
 const app = express();
 app.use(
   cors({
