@@ -1,4 +1,4 @@
-import { Nav, Navbar, Container, NavItem, Button, ButtonGroup } from 'react-bootstrap'
+import { Nav, Navbar, Container, NavItem, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 function NavBarComponent() {
   return (
@@ -16,12 +16,6 @@ function NavBarComponent() {
               </NavItem>
               <NavItem>
                 <Link className="nav-link" to="/transactions/archived">Archvies</Link>
-              </NavItem>
-              <NavItem>
-                <Link className="nav-link" to="/login">Login</Link>
-              </NavItem>
-              <NavItem>
-                <Link className="nav-link" to="/register">Register</Link>
               </NavItem>
             </Nav>
           </Navbar.Collapse>

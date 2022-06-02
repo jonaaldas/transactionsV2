@@ -13,7 +13,7 @@ import {
   editTransactionRequest,
   getSingleTransactionToViewRequest,
   getAllArchivedTransactionsRequest,
-  restoreASingleTransactionRequest
+  restoreASingleTransactionRequest,
 } from '../api/api';
 import {useNavigate} from 'react-router-dom' 
 
@@ -37,6 +37,8 @@ export function TransacionsContainers({children}) {
   const [filteredItems, setFilteredItems] = useState([])
   // flag to compare buttons
   const [activeButtons, setActiveButtons] = useState('')
+  // token
+  const [token, setToken] = useState('')
 
     // this will run once and will get all the transactions 
   useEffect(() => {

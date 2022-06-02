@@ -3,9 +3,9 @@ import Transactions from "../modules/Transactions.js";
 
 export const getTransactions = async (req, res) => {
   try {
-    // searching all the post and it has to be async
-    const tran = await Transactions.find()
-    return res.json(tran);
+      // searching all the post and it has to be async
+      const tran = await Transactions.find()
+      return res.json(tran);
   } catch (err) {
     console.error(error.message)
     return res.status(500).json({
@@ -87,7 +87,6 @@ export const createTransactions = async (req, res) => {
       ]
     }
     tran.closed = false
-
     await tran.save()
     return res.json(tran)
   } catch (err) {
