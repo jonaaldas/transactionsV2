@@ -30,6 +30,7 @@ function ShowAllClients() {
                   <Button
                       variant="danger" onClick={() => {
                       archiveTransactions(client._id)
+                      console.log(client._id)
                       toast.success('Transactions has been Archived')
                       refreshPage()
                     }}
