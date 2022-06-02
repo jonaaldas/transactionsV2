@@ -1,4 +1,4 @@
-# Rock Paper Scissors Game 
+# Transaction Managment App
 
 [Live Demo](https://ornate-kulfi-cf002a.netlify.app/)
 [YouTube](https://youtu.be/SkS4hNU2koo)
