@@ -57,7 +57,6 @@ function ShowEachClient() {
             <p><strong className="bold">Address:</strong> {tran.address}</p>
             <p><strong className="bold">Price:</strong> ${tran.price}</p>
           </div>
-
           <div className="w-100 flex flex-col align-items-center justify-start">
             {
               tran.buyer.buyerq.map(q => {
