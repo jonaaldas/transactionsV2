@@ -1,10 +1,41 @@
-# Transaction Managment App
+
+# Transaction Management App
 
 [Live Demo](https://ornate-kulfi-cf002a.netlify.app/)
 [YouTube](https://youtu.be/SkS4hNU2koo)
-## Overview
 
-Transaction Management is a Fullstack app built to help real estate agents view their houses under contract from a birds-ey view.  Being a realtor myself, I notice that once we pass a certain number of homes under contract, we lose focus and track. 
+## Planning Phase / Engineering Process
+
+**Problem**
+When I was a Real Estate agent in the past one of the problems I will face and my peers as well were losing track of a client's progress from A -Z from open to close in the transaction of a home. 
+
+**Thinking Process**
+One of the things I thought about doing as a developer is trying to solve this problem with my new skillset. 
+After learning Vanilla JS and React I decided to tackle this problem. 
+
+***Things the app should have!***
+ 1. I am able to see all of my clients from a bird's eye view and easily identify where each client is in the transaction phase. 
+ 2. Can filter between buyers and sellers 
+ 3. It's easy to use and very intuitive
+ 4. No crazy designs just the bare minimum to see the app function 
+ 5. Able to Delete and Archive Clients for future reference
+
+
+***The Outcome!***
+I came up with a simple design using React Bootstrap and React as my main tool for the job. 
+
+The app has one button where you can add new transactions aka clients
+
+Upon creating the app you can see details of the client like the address they are buying and their details. 
+
+You can see all of the clients you have from one page for an easy view and understanding of where everyone is in the process and how many clients you have under contract (I.E helping buy a home)
+
+You can archive clients' profiles to reference later or when the files have come to a close.  
+
+When you go to each client's profile you can see the steps that need to be taken in order to help this client get a home. 
+
+## Overview
+Transaction Management is a Fullstack app built to help real estate agents view their houses under contract from a birds-eye view.  Being a realtor myself, I notice that once we pass a certain number of homes under contract, we lose focus and track. 
 This app helps realtors see where they are in every transaction and what steps follow next. 
 
 
@@ -64,5 +95,7 @@ On the transactions tab, he can un-Archive the transactions and also delete the 
 
 I would like to learn about authentication and authorization. Add different types of roles to users. 
 ## Made By
+
+- Jonathan Aldas:   [Twitter](https://twitter.com/jonathanxcoder)
 
 -   Personal Portfolio:  [Jonaathanaldas.com ](https://jonathanaldas.com/)
