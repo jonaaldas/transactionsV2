@@ -6,14 +6,17 @@
 
 ## Planning Phase / Engineering Process
 
-**Problem**
+## **Problem**
+
 When I was a Real Estate agent in the past one of the problems I will face and my peers as well were losing track of a client's progress from A -Z from open to close in the transaction of a home. 
 
-**Thinking Process**
+## **Thinking Process**
+
 One of the things I thought about doing as a developer is trying to solve this problem with my new skillset. 
 After learning Vanilla JS and React I decided to tackle this problem. 
 
-***Things the app should have!***
+## ***Things the app should have!***
+
  1. I am able to see all of my clients from a bird's eye view and easily identify where each client is in the transaction phase. 
  2. Can filter between buyers and sellers 
  3. It's easy to use and very intuitive
@@ -21,7 +24,8 @@ After learning Vanilla JS and React I decided to tackle this problem.
  5. Able to Delete and Archive Clients for future reference
 
 
-***The Outcome!***
+## ***The Outcome!***
+
 I came up with a simple design using React Bootstrap and React as my main tool for the job. 
 
 The app has one button where you can add new transactions aka clients
